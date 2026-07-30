@@ -35,4 +35,4 @@ RUN mkdir -p storage/framework/cache/data storage/framework/sessions storage/fra
 
 ENTRYPOINT ["./docker/entrypoint.sh"]
 
-CMD ["php-fpm", "-F"]
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
