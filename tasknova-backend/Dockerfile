@@ -13,9 +13,17 @@ RUN composer install \
 
 FROM php:8.3-fpm-alpine
 
-RUN apk add --no-cache libxml2-dev oniguruma-dev sqlite-dev \
-    && docker-php-ext-install -j"$(nproc)" mbstring pdo_mysql pdo_sqlite opcache
-
+RUN apk add --no-cache \
+    libxml2-dev \
+    oniguruma-dev \
+    sqlite-dev \
+    postgresql-dev \
+    && docker-php-ext-install -j"$(nproc)" \
+    mbstring \
+    pdo_mysql \
+    pdo_sqlite \
+    pdo_pgsql \
+    opcache
 WORKDIR /var/www/html
 
 COPY --from=vendor /app/vendor ./vendor
