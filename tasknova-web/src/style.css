@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --tn-primary: #2864e6;
+    --tn-primary-light: #eef4ff;
+    --tn-secondary: #8554f5;
+    --tn-ink: #14234b;
+    --tn-muted: #68738d;
+    --tn-surface: #f6f8ff;
+    --tn-card: rgba(255, 255, 255, 0.9);
+    --tn-border: rgba(139, 164, 224, 0.26);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-width: 320px;
+    color: var(--tn-ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--tn-surface);
+  }
+}
+
+@layer components {
+  .tn-page {
+    background-color: var(--tn-surface);
+    background-image: linear-gradient(rgba(246, 248, 255, 0.76), rgba(246, 248, 255, 0.92)), url('/brand/tasknova-web-background.png');
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .tn-auth-page {
+    background-color: var(--tn-surface);
+    background-image: linear-gradient(rgba(246, 248, 255, 0.35), rgba(246, 248, 255, 0.62)), url('/brand/tasknova-web-background.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .tn-auth-card,
+  .tn-card {
+    border: 1px solid var(--tn-border);
+    background: var(--tn-card);
+    box-shadow: 0 18px 46px -28px rgba(30, 70, 150, 0.38);
+    backdrop-filter: blur(14px);
+  }
+
+  .tn-auth-card {
+    box-shadow: 0 26px 60px -30px rgba(51, 76, 168, 0.38);
+  }
+
+  .tn-header {
+    border-color: var(--tn-border);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 8px 24px -22px rgba(29, 64, 143, 0.46);
+  }
+
+  .tn-bottom-nav {
+    border-color: var(--tn-border);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 -10px 26px -26px rgba(29, 64, 143, 0.48);
+  }
+
+  .tn-input {
+    @apply w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3.5 text-sm text-brand-ink outline-none transition-all placeholder:text-slate-400 focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/10;
+    box-shadow: inset 0 1px 2px rgba(29, 64, 143, 0.04);
+  }
+
+  .tn-button-primary {
+    @apply relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-primary-600 to-secondary-500 py-3.5 text-sm font-semibold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70;
+  }
+
+  .tn-icon-button {
+    @apply rounded-xl p-2 text-primary-700 transition-colors hover:bg-primary-50 focus:outline-none focus:ring-4 focus:ring-primary-500/10;
+  }
+
+  .tn-logo {
+    object-fit: contain;
+  }
+
+  .tn-label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-brand-muted;
+  }
+
+  .tn-field-error {
+    @apply mt-1.5 text-xs text-red-600;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--tn-primary-light);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #a8c2ff;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tn-secondary);
+}

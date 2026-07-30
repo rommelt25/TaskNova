@@ -1,0 +1,34 @@
+# ==========================
+# Laravel Backend
+# ==========================
+tasknova-backend/vendor/
+tasknova-backend/node_modules/
+tasknova-backend/.env
+tasknova-backend/storage/*.key
+tasknova-backend/bootstrap/cache/*.php
+
+# ==========================
+# Vue Web
+# ==========================
+tasknova-web/node_modules/
+tasknova-web/dist/
+tasknova-web/.env
+
+# ==========================
+# Flutter
+# ==========================
+tasknova-flutter/.dart_tool/
+tasknova-flutter/build/
+tasknova-flutter/.flutter-plugins
+tasknova-flutter/.flutter-plugins-dependencies
+
+# IDE
+.vscode/
+.idea/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
