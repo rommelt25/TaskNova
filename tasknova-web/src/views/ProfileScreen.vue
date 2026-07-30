@@ -1,7 +1,8 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { AlertCircle, BookOpen, LoaderCircle, MapPin, Save, ShieldCheck, UserRound, X } from 'lucide-vue-next'
+import { AlertCircle, BookOpen, LoaderCircle, LogOut, MapPin, Save, ShieldCheck, UserRound, X } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 import BottomNav from '../components/navigation/BottomNav.vue'
 import ProfileHeader from '../components/profile/ProfileHeader.vue'
 import { useAuth } from '../composables/useAuth'
@@ -12,7 +13,8 @@ const peruCatalog = locationModules['../constants/peruLocations.js']?.peruLocati
 const punoCatalog = locationModules['../constants/punoLocations.js']?.punoLocations
 const locations = Array.isArray(peruCatalog) ? peruCatalog : punoCatalog ?? []
 
-const { user } = useAuth()
+const router = useRouter()
+const { user, logout } = useAuth()
 const profileStore = useProfileStore()
 const { profile, isLoading, isSaving, error, successMessage } = storeToRefs(profileStore)
 
@@ -132,6 +134,11 @@ async function saveProfile() {
   if (saved) assignForm(saved)
 }
 
+async function handleLogout() {
+  await logout()
+  router.replace('/login')
+}
+
 onMounted(async () => {
   profileStore.clearMessages()
   const loaded = await profileStore.fetchProfile()
@@ -208,6 +215,7 @@ onMounted(async () => {
 
         <section class="tn-card rounded-3xl bg-white/90 p-5 sm:p-6">
           <div class="flex items-start gap-3"><span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600"><ShieldCheck class="h-5 w-5" aria-hidden="true" /></span><div><h3 class="font-display text-lg font-bold text-brand-ink">Seguridad</h3><p class="mt-1 text-sm leading-6 text-brand-muted">Próximamente podrás administrar tu contraseña, sesiones activas y métodos de recuperación desde aquí.</p></div></div>
+          <button type="button" class="mt-4 inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:bg-red-100" @click="handleLogout"><LogOut class="h-4 w-4" aria-hidden="true" />Cerrar sesión</button>
         </section>
 
         <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
