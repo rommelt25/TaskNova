@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION'),
+    'default' => env('DB_CONNECTION', env('PGDATABASE') ? 'pgsql' : 'sqlite'),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,11 +45,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST'),
-            'port' => env('DB_PORT'),
-            'database' => env('DB_DATABASE'),
-            'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
+            'host' => env('DB_HOST', env('MYSQLHOST')),
+            'port' => env('DB_PORT', env('MYSQLPORT')),
+            'database' => env('DB_DATABASE', env('MYSQLDATABASE')),
+            'username' => env('DB_USERNAME', env('MYSQLUSER')),
+            'password' => env('DB_PASSWORD', env('MYSQLPASSWORD')),
             'unix_socket' => env('DB_SOCKET'),
             'charset' => env('DB_CHARSET'),
             'collation' => env('DB_COLLATION'),
@@ -65,11 +65,11 @@ return [
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST'),
-            'port' => env('DB_PORT'),
-            'database' => env('DB_DATABASE'),
-            'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
+            'host' => env('DB_HOST', env('MARIADBHOST')),
+            'port' => env('DB_PORT', env('MARIADBPORT')),
+            'database' => env('DB_DATABASE', env('MARIADBDATABASE')),
+            'username' => env('DB_USERNAME', env('MARIADBUSER')),
+            'password' => env('DB_PASSWORD', env('MARIADBPASSWORD')),
             'unix_socket' => env('DB_SOCKET'),
             'charset' => env('DB_CHARSET'),
             'collation' => env('DB_COLLATION'),
@@ -85,16 +85,16 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => env('DB_HOST', env('PGHOST')),
+            'port' => env('DB_PORT', env('PGPORT')),
+            'database' => env('DB_DATABASE', env('PGDATABASE')),
+            'username' => env('DB_USERNAME', env('PGUSER')),
+            'password' => env('DB_PASSWORD', env('PGPASSWORD')),
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'search_path' => env('DB_SCHEMA', 'public'),
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
 
         'sqlsrv' => [
