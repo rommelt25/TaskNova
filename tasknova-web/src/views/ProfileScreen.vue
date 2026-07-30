@@ -5,8 +5,12 @@ import { storeToRefs } from 'pinia'
 import BottomNav from '../components/navigation/BottomNav.vue'
 import ProfileHeader from '../components/profile/ProfileHeader.vue'
 import { useAuth } from '../composables/useAuth'
-import { getDistricts, getProvinces, peruLocations } from '../constants/peruLocations'
 import { useProfileStore } from '../stores/profile'
+
+const locationModules = import.meta.glob('../constants/*Locations.js', { eager: true })
+const peruCatalog = locationModules['../constants/peruLocations.js']?.peruLocations
+const punoCatalog = locationModules['../constants/punoLocations.js']?.punoLocations
+const locations = Array.isArray(peruCatalog) ? peruCatalog : punoCatalog ?? []
 
 const { user } = useAuth()
 const profileStore = useProfileStore()
@@ -47,8 +51,10 @@ function assignForm(source = {}) {
   initialForm.value = { ...form }
 }
 
-const provinces = computed(() => getProvinces(form.department))
-const districts = computed(() => getDistricts(form.department, form.province))
+const departments = computed(() => locations)
+const selectedDepartment = computed(() => departments.value.find((department) => department.name === form.department))
+const provinces = computed(() => selectedDepartment.value?.provinces ?? [])
+const districts = computed(() => provinces.value.find((province) => province.name === form.province)?.districts ?? [])
 
 const validation = computed(() => ({
   first_name: !form.first_name.trim() ? 'Ingresa tus nombres.' : form.first_name.length > 100 ? 'Máximo 100 caracteres.' : '',
@@ -193,11 +199,11 @@ onMounted(async () => {
         <section class="tn-card rounded-3xl bg-white/90 p-5 sm:p-6">
           <div class="mb-6 flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"><MapPin class="h-5 w-5" aria-hidden="true" /></span><div><h3 class="font-display text-lg font-bold text-brand-ink">Procedencia</h3><p class="text-sm text-brand-muted">Catálogos preparados para la división político-administrativa del Perú.</p></div></div>
           <div class="grid gap-5 sm:grid-cols-3">
-            <div><label for="department" class="tn-label">Departamento</label><select id="department" v-model="form.department" class="tn-input" :class="{ 'border-red-400': fieldError('department') }" @change="onDepartmentChange"><option value="">Selecciona un departamento</option><option v-for="item in peruLocations.departments" :key="item" :value="item">{{ item }}</option><option v-if="form.department && !peruLocations.departments.includes(form.department)" :value="form.department">{{ form.department }}</option></select><p v-if="fieldError('department')" class="tn-field-error">{{ fieldError('department') }}</p></div>
-            <div><label for="province" class="tn-label">Provincia</label><select id="province" v-model="form.province" class="tn-input" :disabled="!form.department || !provinces.length" :class="{ 'border-red-400': fieldError('province') }" @change="onProvinceChange"><option value="">{{ provinces.length ? 'Selecciona una provincia' : 'Catálogo pendiente' }}</option><option v-for="item in provinces" :key="item" :value="item">{{ item }}</option><option v-if="form.province && !provinces.includes(form.province)" :value="form.province">{{ form.province }}</option></select><p v-if="fieldError('province')" class="tn-field-error">{{ fieldError('province') }}</p></div>
-            <div><label for="district" class="tn-label">Distrito</label><select id="district" v-model="form.district" class="tn-input" :disabled="!form.province || !districts.length" :class="{ 'border-red-400': fieldError('district') }" @change="touch('district')"><option value="">{{ districts.length ? 'Selecciona un distrito' : 'Catálogo pendiente' }}</option><option v-for="item in districts" :key="item" :value="item">{{ item }}</option><option v-if="form.district && !districts.includes(form.district)" :value="form.district">{{ form.district }}</option></select><p v-if="fieldError('district')" class="tn-field-error">{{ fieldError('district') }}</p></div>
+            <div><label for="department" class="tn-label">Departamento</label><select id="department" v-model="form.department" class="tn-input" :class="{ 'border-red-400': fieldError('department') }" @change="onDepartmentChange"><option value="">Selecciona un departamento</option><option v-for="department in departments" :key="department.id" :value="department.name">{{ department.name }}</option></select><p v-if="fieldError('department')" class="tn-field-error">{{ fieldError('department') }}</p></div>
+            <div><label for="province" class="tn-label">Provincia</label><select id="province" v-model="form.province" class="tn-input" :disabled="!form.department || !provinces.length" :class="{ 'border-red-400': fieldError('province') }" @change="onProvinceChange"><option value="">{{ provinces.length ? 'Selecciona una provincia' : 'Catálogo pendiente' }}</option><option v-for="province in provinces" :key="province.id" :value="province.name">{{ province.name }}</option></select><p v-if="fieldError('province')" class="tn-field-error">{{ fieldError('province') }}</p></div>
+            <div><label for="district" class="tn-label">Distrito</label><select id="district" v-model="form.district" class="tn-input" :disabled="!form.province || !districts.length" :class="{ 'border-red-400': fieldError('district') }" @change="touch('district')"><option value="">{{ districts.length ? 'Selecciona un distrito' : 'Catálogo pendiente' }}</option><option v-for="district in districts" :key="district.id" :value="district.name">{{ district.name }}</option></select><p v-if="fieldError('district')" class="tn-field-error">{{ fieldError('district') }}</p></div>
           </div>
-          <p class="mt-4 text-xs leading-5 text-brand-muted">Integra el catálogo oficial en <code class="rounded bg-primary-50 px-1.5 py-0.5 text-primary-700">src/constants/peruLocations.js</code> para habilitar las provincias y distritos.</p>
+          <p class="mt-4 text-xs leading-5 text-brand-muted">Catálogo oficial UBIGEO de Puno.</p>
         </section>
 
         <section class="tn-card rounded-3xl bg-white/90 p-5 sm:p-6">
