@@ -180,6 +180,51 @@ export const tasksApi = {
   },
 }
 
+export const notificationsApi = {
+  async getNotifications(params = {}) {
+    const { data } = await http.get('/notifications', { params: { per_page: 20, ...params } })
+    return normalizePaginatedCollection(data, params)
+  },
+
+  async markAsRead(id) {
+    const { data } = await http.patch(`/notifications/${id}/read`)
+    return unwrap(data)
+  },
+
+  async markAllAsRead() {
+    const { data } = await http.patch('/notifications/read-all')
+    return unwrap(data)
+  },
+
+  async deleteNotification(id) {
+    await http.delete(`/notifications/${id}`)
+  },
+}
+
+export const taskAttachmentsApi = {
+  async getAttachments(taskId) {
+    const { data } = await http.get(`/tasks/${taskId}/attachments`)
+    const resource = unwrap(data)
+    return Array.isArray(resource) ? resource : resource?.data || []
+  },
+
+  async uploadAttachment(taskId, file, onUploadProgress) {
+    const formData = new FormData()
+    formData.append('file', file)
+    const { data } = await http.post(`/tasks/${taskId}/attachments`, formData, { onUploadProgress })
+    return unwrap(data)
+  },
+
+  async deleteAttachment(taskId, attachmentId) {
+    await http.delete(`/tasks/${taskId}/attachments/${attachmentId}`)
+  },
+
+  async downloadAttachment(taskId, attachmentId) {
+    const response = await http.get(`/tasks/${taskId}/attachments/${attachmentId}/download`, { responseType: 'blob' })
+    return response.data
+  },
+}
+
 export const profileApi = {
   async getProfile() {
     const { data } = await http.get('/profile')
