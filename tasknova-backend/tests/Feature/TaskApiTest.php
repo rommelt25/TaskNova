@@ -38,7 +38,7 @@ class TaskApiTest extends TestCase
             ->assertJsonPath('data.status', 'completed');
 
         $this->deleteJson("/api/tasks/{$taskId}")->assertNoContent();
-        $this->assertDatabaseMissing('tasks', ['id' => $taskId]);
+        $this->assertSoftDeleted('tasks', ['id' => $taskId]);
     }
 
     public function test_a_task_can_be_shared_for_read_only_access(): void

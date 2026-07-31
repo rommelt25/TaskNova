@@ -5,8 +5,8 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -68,5 +68,25 @@ class User extends Authenticatable
     public function categories(): HasMany
     {
         return $this->hasMany(Category::class);
+    }
+
+    public function appNotifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function preference(): HasOne
+    {
+        return $this->hasOne(UserPreference::class);
+    }
+
+    public function activityLogs(): HasMany
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+    public function taskAttachments(): HasMany
+    {
+        return $this->hasMany(TaskAttachment::class);
     }
 }

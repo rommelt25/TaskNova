@@ -55,7 +55,7 @@ class WorkspaceApiTest extends TestCase
             ->assertJsonPath('data.status', 'completed');
 
         $task->refresh()->update(['status' => 'pending']);
-        $month = now()->format('Y-m');
+        $month = $task->due_date->format('Y-m');
         $this->getJson("/api/calendar?month={$month}&category_id={$category->id}")
             ->assertOk()
             ->assertJsonPath('data.0.id', $task->id)
