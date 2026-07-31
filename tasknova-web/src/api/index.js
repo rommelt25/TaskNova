@@ -225,6 +225,33 @@ export const taskAttachmentsApi = {
   },
 }
 
+export const subtasksApi = {
+  async getSubtasks(taskId) {
+    const { data } = await http.get(`/tasks/${taskId}/subtasks`)
+    const resource = unwrap(data)
+    return Array.isArray(resource) ? resource : resource?.data || []
+  },
+
+  async createSubtask(taskId, subtask) {
+    const { data } = await http.post(`/tasks/${taskId}/subtasks`, subtask)
+    return unwrap(data)
+  },
+
+  async updateSubtask(taskId, subtaskId, subtask) {
+    const { data } = await http.put(`/tasks/${taskId}/subtasks/${subtaskId}`, subtask)
+    return unwrap(data)
+  },
+
+  async updateSubtaskStatus(taskId, subtaskId, completed) {
+    const { data } = await http.patch(`/tasks/${taskId}/subtasks/${subtaskId}/status`, { completed })
+    return unwrap(data)
+  },
+
+  async deleteSubtask(taskId, subtaskId) {
+    await http.delete(`/tasks/${taskId}/subtasks/${subtaskId}`)
+  },
+}
+
 export const profileApi = {
   async getProfile() {
     const { data } = await http.get('/profile')

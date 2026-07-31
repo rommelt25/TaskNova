@@ -9,6 +9,7 @@ use App\Models\TaskAttachment;
 use App\Observers\CategoryObserver;
 use App\Observers\PersonalAccessTokenObserver;
 use App\Observers\SharedTaskObserver;
+use App\Observers\SubtaskCleanupObserver;
 use App\Observers\TaskAttachmentCleanupObserver;
 use App\Observers\TaskAttachmentObserver;
 use App\Observers\TaskObserver;
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Task::class, TaskPolicy::class);
         Task::observe(TaskObserver::class);
         Task::observe(TaskAttachmentCleanupObserver::class);
+        Task::observe(SubtaskCleanupObserver::class);
         Category::observe(CategoryObserver::class);
         SharedTask::observe(SharedTaskObserver::class);
         TaskAttachment::observe(TaskAttachmentObserver::class);

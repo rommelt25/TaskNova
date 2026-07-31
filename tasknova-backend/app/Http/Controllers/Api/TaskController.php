@@ -91,6 +91,7 @@ class TaskController extends Controller
 
     public function updateStatus(UpdateTaskStatusRequest $request, Task $task): TaskResource
     {
+        $this->authorize('update', $task);
         $task->update($request->validated());
 
         return new TaskResource($task->load(['user', 'sharedWith', 'category']));

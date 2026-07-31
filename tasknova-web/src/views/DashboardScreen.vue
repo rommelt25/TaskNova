@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { CheckCircle2, CircleDashed, ClipboardList, Clock3, Plus, CalendarDays, UserRound, LoaderCircle, AlertCircle, ListTodo } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
 import BottomNav from '../components/navigation/BottomNav.vue'
+import NotificationBell from '../components/notifications/NotificationBell.vue'
 import ProgressCard from '../components/dashboard/ProgressCard.vue'
 import PriorityTasks from '../components/dashboard/PriorityTasks.vue'
 import RecentActivity from '../components/dashboard/RecentActivity.vue'
@@ -57,10 +58,13 @@ onMounted(() => dashboardStore.fetchDashboard())
     <header class="tn-header sticky top-0 z-10 border-b backdrop-blur-md">
       <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <div class="min-w-0"><p class="capitalize text-xs font-semibold text-brand-muted">{{ currentDate }}</p><h1 class="mt-1 truncate font-display text-xl font-bold text-brand-ink sm:text-2xl">{{ greeting }}, {{ firstName }} <span aria-hidden="true">👋</span></h1><p class="mt-1 hidden text-sm text-brand-muted sm:block">Organiza tu tiempo, cumple tus objetivos.</p></div>
-        <button type="button" class="flex shrink-0 items-center gap-3 rounded-2xl p-1.5 pr-3 text-left transition hover:bg-primary-50" @click="openProfile">
-          <div class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 text-white shadow-soft"><img v-if="user?.avatar_url" :src="user.avatar_url" alt="Avatar de usuario" class="h-full w-full object-cover" /><span v-else class="font-display text-lg font-bold">{{ firstName.charAt(0).toUpperCase() }}</span></div>
-          <span class="hidden text-sm font-semibold text-primary-700 sm:block">Editar perfil</span>
-        </button>
+        <div class="flex shrink-0 items-center gap-2">
+          <NotificationBell />
+          <button type="button" class="flex items-center gap-3 rounded-2xl p-1.5 pr-3 text-left transition hover:bg-primary-50" @click="openProfile">
+            <div class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 text-white shadow-soft"><img v-if="user?.avatar_url" :src="user.avatar_url" alt="Avatar de usuario" class="h-full w-full object-cover" /><span v-else class="font-display text-lg font-bold">{{ firstName.charAt(0).toUpperCase() }}</span></div>
+            <span class="hidden text-sm font-semibold text-primary-700 sm:block">Editar perfil</span>
+          </button>
+        </div>
       </div>
     </header>
 

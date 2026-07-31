@@ -75,4 +75,21 @@ class TaskApiTest extends TestCase
 
         $this->getJson("/api/tasks/{$task->id}")->assertForbidden();
     }
+
+    public function test_a_user_cannot_change_the_status_of_another_users_task(): void
+    {
+        $owner = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $task = Task::factory()->for($owner)->create(['status' => 'pending']);
+
+        Sanctum::actingAs($otherUser);
+
+        $this->patchJson("/api/tasks/{$task->id}/status", ['status' => 'completed'])
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $task->id,
+            'status' => 'pending',
+        ]);
+    }
 }

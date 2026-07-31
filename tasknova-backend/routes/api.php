@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PreferenceController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\StatisticsController;
+use App\Http\Controllers\Api\SubtaskController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\TaskAttachmentController;
 use App\Http\Controllers\Api\TrashController;
@@ -60,6 +61,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('tasks', TaskController::class);
     Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus']);
+    Route::get('/tasks/{task}/subtasks', [SubtaskController::class, 'index']);
+    Route::post('/tasks/{task}/subtasks', [SubtaskController::class, 'store']);
+    Route::get('/tasks/{task}/subtasks/{subtask}', [SubtaskController::class, 'show']);
+    Route::put('/tasks/{task}/subtasks/{subtask}', [SubtaskController::class, 'update']);
+    Route::patch('/tasks/{task}/subtasks/{subtask}/status', [SubtaskController::class, 'updateStatus']);
+    Route::delete('/tasks/{task}/subtasks/{subtask}', [SubtaskController::class, 'destroy']);
     Route::get('/tasks/{task}/attachments', [TaskAttachmentController::class, 'index']);
     Route::post('/tasks/{task}/attachments', [TaskAttachmentController::class, 'store']);
     Route::delete('/tasks/{task}/attachments/{attachment}', [TaskAttachmentController::class, 'destroy']);

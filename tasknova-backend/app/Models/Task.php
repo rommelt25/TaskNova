@@ -53,6 +53,11 @@ class Task extends Model
         return $this->hasMany(TaskAttachment::class);
     }
 
+    public function subtasks(): HasMany
+    {
+        return $this->hasMany(Subtask::class);
+    }
+
     public function sharedWith(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'shared_tasks')->using(SharedTask::class)->withTimestamps();
